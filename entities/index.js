@@ -1,4 +1,4 @@
-import Bird from "../components/Bird";
+import BirdRender from "../components/Bird";
 import Matter from "matter-js";
 
 const restart = () => {
@@ -9,7 +9,7 @@ const restart = () => {
 
   return {
     physics: { engine, world },
-    Bird: Bird(
+    Bird: BirdRender(
       world,
       "green",
       { x: 50, y: 400 },

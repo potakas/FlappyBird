@@ -27,7 +27,7 @@ const Bird = (props) => {
   );
 };
 
-export default (world, color, pos, size) => {
+const BirdRender = (world, color, pos, size) => {
   const initialBird = Matter.Bodies.rectangle(
     pos.x,
     pos.y,
@@ -35,7 +35,7 @@ export default (world, color, pos, size) => {
     size.height,
     { label: "Bird" }
   );
-  Matter.World.add(world,initialBird);
+  Matter.World.add(world, initialBird);
 
   return {
     body: initialBird,
@@ -44,3 +44,4 @@ export default (world, color, pos, size) => {
     renderer: <Bird />,
   };
 };
+export default BirdRender;
