@@ -1,16 +1,16 @@
 import BirdRender from "../components/Bird";
 import Matter from "matter-js";
 import FloorRender from "../components/Floor";
-import { Dimensions } from "react-native";
-
-const windowHeight= Dimensions.get("window").height;
-const windowWidth= Dimensions.get("window").width;
+import ObstacleRender from "../components/Obstacles";
+import { getPipeSizePosPair, windowHeight, windowWidth } from "../utils/random";
 
 const restart = () => {
   let engine = Matter.Engine.create({ enableSleeping: false });
   let world = engine.world;
 
   world.gravity.y = 0.4;
+
+  const pipeSizePosA = getPipeSizePosPair();
 
   return {
     physics: { engine, world },
@@ -20,13 +20,28 @@ const restart = () => {
       { x: 50, y: 400 },
       { height: 40, width: 40 }
     ),
-    Floor:FloorRender(
+    ObstacleTop1: ObstacleRender(
+      world,
+      "ObstacleTop1",
+      "red",
+      pipeSizePosA.pipeTop.pos,
+      pipeSizePosA.pipeTop.size
+    ),
+    ObstacleBottom1: ObstacleRender(
+      world,
+      "ObstacleBottom1",
+      "red",
+      pipeSizePosA.pipeBottom.pos,
+      pipeSizePosA.pipeBottom.size
+    ),
+    Floor: FloorRender(
       world,
       "brown",
-      {x:windowWidth/2, y:windowHeight},
-      {height: 50, width: windowWidth}
-    )
+      { x: windowWidth / 2, y: windowHeight },
+      { height: 50, width: windowWidth }
+    ),
+    
   };
 };
 
-export default restart
+export default restart;
