@@ -11,7 +11,7 @@ export default function App() {
   const [gameEngine, setGameEngine] = useState(null);
   const [points, setPoints] = useState(0);
   useEffect(() => {
-    setRunning(true);
+    setRunning(false);
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor:'cyan' }}>
