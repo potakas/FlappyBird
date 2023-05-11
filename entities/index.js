@@ -17,35 +17,35 @@ const restart = () => {
     physics: { engine, world },
     Bird: BirdRender(
       world,
-      "green",
+      "orange",
       { x: 50, y: 400 },
-      { height: 40, width: 40 }
+      { height: 50, width: 50 }
     ),
     ObstacleTop1: ObstacleRender(
       world,
       "ObstacleTop1",
-      "red",
+      "green",
       pipeSizePosA.pipeTop.pos,
       pipeSizePosA.pipeTop.size
     ),
     ObstacleTop2: ObstacleRender(
       world,
       "ObstacleTop2",
-      "red",
+      "green",
       pipeSizePosB.pipeTop.pos,
       pipeSizePosB.pipeTop.size
     ),
     ObstacleBottom1: ObstacleRender(
       world,
       "ObstacleBottom1",
-      "red",
+      "green",
       pipeSizePosA.pipeBottom.pos,
       pipeSizePosA.pipeBottom.size
     ),
     ObstacleBottom2: ObstacleRender(
       world,
       "ObstacleBottom2",
-      "red",
+      "green",
       pipeSizePosB.pipeBottom.pos,
       pipeSizePosB.pipeBottom.size
     ),
@@ -53,7 +53,7 @@ const restart = () => {
       world,
       "brown",
       { x: windowWidth / 2, y: windowHeight },
-      { height: 50, width: windowWidth }
+      { height: 100, width: windowWidth }
     ),
   };
 };

@@ -14,7 +14,7 @@ export default function App() {
     setRunning(true);
   }, []);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor:'cyan' }}>
       <Text
         style={{
           textAlign: "center",
