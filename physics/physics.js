@@ -9,13 +9,13 @@ const Physics = (entities, { touches, time, dispatch }) => {
     .filter((t) => t.type === "press")
     .forEach((t) => {
       Matter.Body.setVelocity(entities.Bird.body, {
-        x: 0,
-        y: -6,
+        x: 0.0001,
+        y: -5,
       });
     });
 
   Matter.Engine.update(engine, time.delta);
-  for (let i = 1; i <= 2; i++) {
+  for (let i = 1; i <= 4; i++) {
     if (
       entities[`ObstacleTop${i}`].body.bounds.max.x <= 50 &&
       !entities[`ObstacleTop${i}`].point
@@ -26,7 +26,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
 
 
     if (entities[`ObstacleTop${i}`].body.bounds.max.x <= 0) {
-      const pipeSizePos = getPipeSizePosPair(windowWidth * 0.9);
+      const pipeSizePos = getPipeSizePosPair(windowWidth * 2.2);
 
       Matter.Body.setPosition(
         entities[`ObstacleTop${i}`].body,
