@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import restart from "./entities";
 import Physics from "./physics/physics";
@@ -15,6 +15,10 @@ export default function App() {
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor:'cyan' }}>
+      <ImageBackground
+        source={require("./images/sky.png")}
+        style={{ flex: 1, resizeMode: "cover" }}
+      >
       <Text
         style={{
           textAlign: "center",
@@ -75,6 +79,7 @@ export default function App() {
           </TouchableOpacity>
         </View>
       ) : null}
+      </ImageBackground>
     </View>
   );
 }

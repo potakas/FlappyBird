@@ -1,6 +1,6 @@
 import Matter from "matter-js";
 
-import { View } from "react-native";
+import { ImageBackground, View } from "react-native";
 
 const Obstacle = (props) => {
   const widthBody = props.body.bounds.max.x - props.body.bounds.min.x;
@@ -14,18 +14,23 @@ const Obstacle = (props) => {
   return (
     <View
       style={{
-        borderWidth: 3,
-        borderColor: "blue",
+        borderWidth: 1,
+        borderColor: "black",
         borderStyle: "solid",
-        borderRadius:4,
-        backgroundColor:color,
+        borderRadius: 2,
+        // backgroundColor:color,
         position: "absolute",
         left: xBody,
         top: yBody,
         width: widthBody,
         height: heightBody,
       }}
-    />
+    >
+      <ImageBackground
+        source={require("../images/pipe.png")}
+        style={{flex:1, padding:2, resizeMode:'contain', justifyContent: 'center'}}
+      />
+    </View>
   );
 };
 

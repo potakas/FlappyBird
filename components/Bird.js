@@ -1,6 +1,6 @@
 import Matter from "matter-js";
 
-import { View } from "react-native";
+import { ImageBackground, View } from "react-native";
 
 const Bird = (props) => {
   const widthBody = props.body.bounds.max.x - props.body.bounds.min.x;
@@ -25,7 +25,12 @@ const Bird = (props) => {
         width: widthBody,
         height: heightBody,
       }}
-    />
+    >
+      <ImageBackground
+        source={require("../images/ball.png")}
+        style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
+      />
+    </View>
   );
 };
 

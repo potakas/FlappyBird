@@ -1,6 +1,6 @@
 import Matter from "matter-js";
 
-import { View } from "react-native";
+import { ImageBackground, View } from "react-native";
 
 const Floor = (props) => {
   const widthBody = props.body.bounds.max.x - props.body.bounds.min.x;
@@ -14,14 +14,19 @@ const Floor = (props) => {
   return (
     <View
       style={{
-        backgroundColor: color,
+        backgroundColor: 'transparent',
         position: "absolute",
         left: xBody,
         top: yBody,
         width: widthBody,
         height: heightBody,
       }}
-    />
+    >
+    <ImageBackground
+        source={require("../images/ground.png")}
+        style={{ flex: 1, padding:16, flexDirection:'row', resizeMode: "cover"}}
+      />
+      </View>
   );
 };
 
