@@ -1,19 +1,47 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import restart from "./entities";
 import Physics from "./physics/physics";
 import { TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [running, setRunning] = useState(false);
   const [gameEngine, setGameEngine] = useState(null);
   const [points, setPoints] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [name, setName] = useState("");
+  const [highScoreList, setHighScoreList] = useState([
+    { name: "noname", points: 0 },
+    { name: "noname", points: 0 },
+    { name: "noname", points: 0 },
+    { name: "noname", points: 0 },
+    { name: "noname", points: 0 },
+  ]);
+  const [highScore, setHighScore] = useState(false);
   useEffect(() => {
+    const getHighScore = async () => {
+      const highScoreString = await AsyncStorage.getItem("highscore");
+      if (highScoreString) {
+        console.log("NEW HIGHSCORE");
+        const highScoreObject = JSON.parse(highScoreString);
+        setHighScoreList([highScoreObject, ...highScoreList.slice(0, 4)]);
+      }
+
+      console.log("HIGHSCORE IS=>", highScoreList);
+    };
+    getHighScore();
     setRunning(false);
-  }, []);
+  }, [highScore]);
   return (
     <View style={{ flex: 1, backgroundColor: "cyan" }}>
       <ImageBackground
@@ -42,6 +70,18 @@ export default function App() {
               case "game_over":
                 setRunning(false);
                 setGameOver(true);
+                for (let i = 0; i < highScoreList.length; i++) {
+                  if (points > highScoreList[i].points) {
+                    const updatedHighScoreList = [
+                      ...highScoreList.slice(0, i),
+                      { name, points },
+                      ...highScoreList.slice(i + 1),
+                    ];
+                    setHighScoreList(updatedHighScoreList);
+                    setHighScore(true);
+                    break;
+                  }
+                }
                 gameEngine.stop();
                 break;
               case "new_point":
@@ -101,17 +141,51 @@ export default function App() {
                 borderRadius: 4,
               }}
               onPress={() => {
-                // setPoints(0);
                 setRunning(!running);
-                // gameEngine.swap((restart()))
               }}
             >
               <Text
-                style={{ fontWeight: "bold", color: "white", fontSize: 20, textAlign:'center' }}
+                style={{
+                  fontWeight: "bold",
+                  color: "white",
+                  fontSize: 20,
+                  textAlign: "center",
+                }}
               >
                 {running ? "\u23F8" : "\u25B6"}
               </Text>
             </TouchableOpacity>
+          </View>
+        )}
+        {highScore && (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text>Name</Text>
+            <TextInput
+              autoCapitalize={false}
+              onChangeText={(text) => {
+                setName(text);
+              }}
+              value={name}
+            />
+            <Text>Score</Text>
+            <Text>{points}</Text>
+            <Button
+              title="SUBMIT"
+              onPress={() => {
+                AsyncStorage.setItem(
+                  "highscore",
+                  JSON.stringify({ name, points })
+                );
+                setHighScore(false);
+              }}
+            />
           </View>
         )}
       </ImageBackground>
