@@ -28,13 +28,19 @@ export default function App() {
     { name: "noname", points: 0 },
   ]);
   const [highScore, setHighScore] = useState(false);
+  const [showHighScores, setShowHighScores] = useState(false);
+
   useEffect(() => {
     const getHighScore = async () => {
       const highScoreString = await AsyncStorage.getItem("highscore");
-      if (highScoreString) {
+      if (highScoreString && !highScore) {
         console.log("NEW HIGHSCORE");
         const highScoreObject = JSON.parse(highScoreString);
-        setHighScoreList([highScoreObject, ...highScoreList.slice(0, 4)]);
+        //correct possition
+        const updatedHighScoreList = [...highScoreList, { ...highScoreObject }];
+        updatedHighScoreList.sort((a, b) => b.points - a.points);
+        // setHighScoreList([highScoreObject, ...highScoreList.slice(0, 4)]);
+        setHighScoreList(updatedHighScoreList.slice(0, 5));
       }
 
       console.log("HIGHSCORE IS=>", highScoreList);
@@ -58,6 +64,60 @@ export default function App() {
         >
           {points}
         </Text>
+        {highScore && (
+          <View
+            style={{
+              // flex: 0,
+              // flexDirection: "column",
+              width: "50%",
+              alignSelf: "center",
+              zIndex: 100,
+              justifyContent: "center",
+              alignItems: "center",
+              borderWidth: 2,
+              borderColor: "black",
+              borderRadius: 8,
+              backgroundColor: "gray",
+            }}
+          >
+            <Text>Name</Text>
+            <TextInput
+              style={{
+                backgroundColor: "white",
+                borderRadius: 8,
+                padding: 4,
+                width: "80%",
+              }}
+              onChangeText={(text) => {
+                setName(text);
+              }}
+              value={name}
+            />
+            <Text>Score</Text>
+            <Text
+              style={{
+                backgroundColor: "white",
+                borderRadius: 8,
+                padding: 4,
+                width: "50%",
+                textAlign: "center",
+              }}
+            >
+              {points}
+            </Text>
+            <Button
+              title="SUBMIT"
+              onPress={() => {
+                console.log("NAME IS=>", name, "POINTS ARE=>", points);
+                AsyncStorage.setItem(
+                  "highscore",
+                  JSON.stringify({ name, points })
+                );
+                setHighScore(false);
+              }}
+            />
+          </View>
+        )}
         <GameEngine
           ref={(ref) => {
             setGameEngine(ref);
@@ -72,12 +132,12 @@ export default function App() {
                 setGameOver(true);
                 for (let i = 0; i < highScoreList.length; i++) {
                   if (points > highScoreList[i].points) {
-                    const updatedHighScoreList = [
-                      ...highScoreList.slice(0, i),
-                      { name, points },
-                      ...highScoreList.slice(i + 1),
-                    ];
-                    setHighScoreList(updatedHighScoreList);
+                    // const updatedHighScoreList = [
+                    //   ...highScoreList.slice(0, i),
+                    //   { name, points },
+                    //   ...highScoreList.slice(i + 1),
+                    // ];
+                    // setHighScoreList(updatedHighScoreList);
                     setHighScore(true);
                     break;
                   }
@@ -109,6 +169,7 @@ export default function App() {
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 borderRadius: 8,
+                margin: 16,
               }}
               onPress={() => {
                 setPoints(0);
@@ -123,8 +184,66 @@ export default function App() {
                 START GAME
               </Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "black",
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                borderRadius: 8,
+                margin: 16,
+              }}
+              onPress={() => setShowHighScores(true)}
+            >
+              <Text
+                style={{ fontWeight: "bold", color: "white", fontSize: 30 }}
+              >
+                HIGHSCORES
+              </Text>
+            </TouchableOpacity>
           </View>
         ) : null}
+        {showHighScores && (
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "white",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {highScoreList.map((player, index) => (
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+                key={index}
+              >
+                {player.name}: {player.points}
+              </Text>
+            ))}
+            <TouchableOpacity
+              style={{ backgroundColor: "black", borderRadius: 8, padding: 10 }}
+              onPress={() => setShowHighScores(false)}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
         {!gameOver && (
           <View
             style={{
@@ -155,37 +274,6 @@ export default function App() {
                 {running ? "\u23F8" : "\u25B6"}
               </Text>
             </TouchableOpacity>
-          </View>
-        )}
-        {highScore && (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text>Name</Text>
-            <TextInput
-              autoCapitalize={false}
-              onChangeText={(text) => {
-                setName(text);
-              }}
-              value={name}
-            />
-            <Text>Score</Text>
-            <Text>{points}</Text>
-            <Button
-              title="SUBMIT"
-              onPress={() => {
-                AsyncStorage.setItem(
-                  "highscore",
-                  JSON.stringify({ name, points })
-                );
-                setHighScore(false);
-              }}
-            />
           </View>
         )}
       </ImageBackground>
