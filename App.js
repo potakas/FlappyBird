@@ -31,6 +31,19 @@ export default function App() {
   const [showHighScores, setShowHighScores] = useState(false);
 
   useEffect(() => {
+    const getHighScoreList = async () => {
+      try {
+        const highScoreListJson = await AsyncStorage.getItem("highScoreList");
+        const scoreList = JSON.parse(highScoreListJson);
+        setHighScoreList(scoreList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getHighScoreList();
+  }, []);
+
+  useEffect(() => {
     const getHighScore = async () => {
       const highScoreString = await AsyncStorage.getItem("highscore");
       if (highScoreString && !highScore) {
@@ -41,13 +54,24 @@ export default function App() {
         updatedHighScoreList.sort((a, b) => b.points - a.points);
         // setHighScoreList([highScoreObject, ...highScoreList.slice(0, 4)]);
         setHighScoreList(updatedHighScoreList.slice(0, 5));
+        const highScoreListJson = JSON.stringify(updatedHighScoreList.slice(0, 5));
+        try {
+          await AsyncStorage.setItem("highScoreList", highScoreListJson);
+        } catch (error) {
+          console.log(error);
+        }
       }
-
-      console.log("HIGHSCORE IS=>", highScoreList);
     };
     getHighScore();
+    AsyncStorage.removeItem('highscore')
     setRunning(false);
   }, [highScore]);
+
+
+  const componentWillUnmount = async () => {
+    await AsyncStorage.removeItem("highscore");
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "cyan" }}>
       <ImageBackground
@@ -159,7 +183,7 @@ export default function App() {
         >
           <StatusBar style="auto" hidden={true} />
         </GameEngine>
-        {!running ? (
+        {(!running && !highScore)? (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
