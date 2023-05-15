@@ -3,6 +3,7 @@ import Matter from "matter-js";
 import FloorRender from "../components/Floor";
 import ObstacleRender from "../components/Obstacles";
 import { getPipeSizePosPair, windowHeight, windowWidth } from "../utils/random";
+import PaperPlaneRender from "../components/Plane";
 
 const restart = () => {
   let engine = Matter.Engine.create({ enableSleeping: false });
@@ -18,6 +19,7 @@ const restart = () => {
 
   return {
     physics: { engine, world },
+    // Plane:PaperPlaneRender(world,"yellow",{ x: 50, y: 200 }),
     Ball: BallRender(
       world,
       "orange",
