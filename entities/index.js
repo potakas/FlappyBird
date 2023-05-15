@@ -1,4 +1,4 @@
-import BirdRender from "../components/Bird";
+import BallRender from "../components/Ball";
 import Matter from "matter-js";
 import FloorRender from "../components/Floor";
 import ObstacleRender from "../components/Obstacles";
@@ -11,14 +11,14 @@ const restart = () => {
   world.gravity.y = 0.4;
 
   const pipeSizePosA = getPipeSizePosPair();
-  const pipeSizePosB = getPipeSizePosPair(windowWidth * 0.8);
-  const pipeSizePosC = getPipeSizePosPair(windowWidth * 1.6);
-  const pipeSizePosD = getPipeSizePosPair(windowWidth * 2.4);
+  const pipeSizePosB = getPipeSizePosPair(windowWidth * 0.9);
+  const pipeSizePosC = getPipeSizePosPair(windowWidth * 1.8);
+  // const pipeSizePosD = getPipeSizePosPair(windowWidth * 2.4);
 
 
   return {
     physics: { engine, world },
-    Bird: BirdRender(
+    Ball: BallRender(
       world,
       "orange",
       { x: 50, y: 400 },
@@ -59,26 +59,12 @@ const restart = () => {
       pipeSizePosC.pipeTop.pos,
       pipeSizePosC.pipeTop.size
     ),
-    ObstacleTop4: ObstacleRender(
-      world,
-      "ObstacleTop4",
-      "green",
-      pipeSizePosD.pipeTop.pos,
-      pipeSizePosD.pipeTop.size
-    ),
     ObstacleBottom3: ObstacleRender(
       world,
       "ObstacleBottom3",
       "green",
       pipeSizePosC.pipeBottom.pos,
       pipeSizePosC.pipeBottom.size
-    ),
-    ObstacleBottom4: ObstacleRender(
-      world,
-      "ObstacleBottom4",
-      "green",
-      pipeSizePosD.pipeBottom.pos,
-      pipeSizePosD.pipeBottom.size
     ),
     Floor: FloorRender(
       world,

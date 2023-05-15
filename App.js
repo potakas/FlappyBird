@@ -35,7 +35,10 @@ export default function App() {
       try {
         const highScoreListJson = await AsyncStorage.getItem("highScoreList");
         const scoreList = JSON.parse(highScoreListJson);
-        setHighScoreList(scoreList);
+        console.log("SCORELIST=>", scoreList);
+        if (scoreList) {
+          setHighScoreList(scoreList);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -54,7 +57,9 @@ export default function App() {
         updatedHighScoreList.sort((a, b) => b.points - a.points);
         // setHighScoreList([highScoreObject, ...highScoreList.slice(0, 4)]);
         setHighScoreList(updatedHighScoreList.slice(0, 5));
-        const highScoreListJson = JSON.stringify(updatedHighScoreList.slice(0, 5));
+        const highScoreListJson = JSON.stringify(
+          updatedHighScoreList.slice(0, 5)
+        );
         try {
           await AsyncStorage.setItem("highScoreList", highScoreListJson);
         } catch (error) {
@@ -63,10 +68,9 @@ export default function App() {
       }
     };
     getHighScore();
-    AsyncStorage.removeItem('highscore')
+    AsyncStorage.removeItem("highscore");
     setRunning(false);
   }, [highScore]);
-
 
   const componentWillUnmount = async () => {
     await AsyncStorage.removeItem("highscore");
@@ -84,6 +88,7 @@ export default function App() {
             fontSize: 40,
             fontWeight: "bold",
             margin: 20,
+            zIndex: 100,
           }}
         >
           {points}
@@ -183,7 +188,7 @@ export default function App() {
         >
           <StatusBar style="auto" hidden={true} />
         </GameEngine>
-        {(!running && !highScore)? (
+        {!running && !highScore ? (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
@@ -273,7 +278,8 @@ export default function App() {
             style={{
               width: 40,
               height: 40,
-              marginLeft: 16,
+              right: 0,
+              marginRight: 16,
               marginTop: 16,
               position: "absolute",
             }}

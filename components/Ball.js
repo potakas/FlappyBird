@@ -2,7 +2,7 @@ import Matter from "matter-js";
 
 import { ImageBackground, View } from "react-native";
 
-const Bird = (props) => {
+const Ball = (props) => {
   const widthBody = props.body.bounds.max.x - props.body.bounds.min.x;
   const heightBody = props.body.bounds.max.y - props.body.bounds.min.y;
 
@@ -34,21 +34,21 @@ const Bird = (props) => {
   );
 };
 
-const BirdRender = (world, color, pos, size) => {
-  const initialBird = Matter.Bodies.rectangle(
+const BallRender = (world, color, pos, size) => {
+  const initialBall = Matter.Bodies.rectangle(
     pos.x,
     pos.y,
     size.width,
     size.height,
-    { label: "Bird" }
+    { label: "Ball" }
   );
-  Matter.World.add(world, initialBird);
+  Matter.World.add(world, initialBall);
 
   return {
-    body: initialBird,
+    body: initialBall,
     color: color,
     pos: pos,
-    renderer: <Bird />,
+    renderer: <Ball />,
   };
 };
-export default BirdRender;
+export default BallRender;
