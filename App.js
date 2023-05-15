@@ -72,10 +72,6 @@ export default function App() {
     setRunning(false);
   }, [highScore]);
 
-  const componentWillUnmount = async () => {
-    await AsyncStorage.removeItem("highscore");
-  };
-
   return (
     <View style={{ flex: 1, backgroundColor: "cyan" }}>
       <ImageBackground
@@ -279,7 +275,7 @@ export default function App() {
               width: 40,
               height: 40,
               right: 0,
-              marginRight: 16,
+              marginRight: 0,
               marginTop: 16,
               position: "absolute",
             }}

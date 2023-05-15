@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "FlappyBird",
-    "slug": "FlappyBird",
+    "name": "BouncingBall",
+    "slug": "BouncingBall",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ball.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/ball.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,17 +19,17 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/ball.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.potakas.FlappyBird"
+      "package": "com.potakas.BouncingBall"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/ball.png"
     },
     "extra": {
       "eas": {
-        "projectId": "50fea928-5631-46ff-9488-da783b57609a"
+        "projectId": "33d196bd-4b68-4f73-a262-385557baecb3"
       }
     }
   }
