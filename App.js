@@ -29,6 +29,7 @@ export default function App() {
   ]);
   const [highScore, setHighScore] = useState(false);
   const [showHighScores, setShowHighScores] = useState(false);
+  const [lives, setLives] = useState(3);
 
   useEffect(() => {
     const getHighScoreList = async () => {
@@ -78,6 +79,17 @@ export default function App() {
         source={require("./images/sky.png")}
         style={{ flex: 1, resizeMode: "cover" }}
       >
+        <Text
+          style={{
+            textAlign: "left",
+            fontSize: 24,
+            fontWeight: "bold",
+            margin: 20,
+            zIndex: 100,
+          }}
+        >
+          Lives:{lives}
+        </Text>
         <Text
           style={{
             textAlign: "center",
@@ -170,7 +182,16 @@ export default function App() {
                 gameEngine.stop();
                 break;
               case "new_point":
+                // Check if point_counter is a multiple of 20
+                if (points % 20 === 0 && points >0) {
+                  setLives(lives + 1); // Increment lives by one
+                }
                 setPoints(points + 1);
+                
+                break;
+              case "lose_life":
+                setLives(lives - 1);
+                gameEngine.swap(restart());
                 break;
             }
           }}
@@ -200,6 +221,7 @@ export default function App() {
                 setPoints(0);
                 setRunning(true);
                 setGameOver(false);
+                setLives(3);
                 gameEngine.swap(restart());
               }}
             >
