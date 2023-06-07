@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme":"bouncingballapp",
     "name": "BouncingBall",
     "slug": "BouncingBall",
     "version": "1.0.0",
