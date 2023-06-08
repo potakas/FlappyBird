@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
+  Alert,
   Button,
   ImageBackground,
   StyleSheet,
@@ -13,6 +14,14 @@ import restart from "./entities";
 import Physics from "./physics/physics";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Linking from "expo-linking";
+
+const handleDeepLink = async () => {
+  const url = await Linking.getInitialURL();
+  if (url) {
+    Alert.alert("Deep Link", `Received deep link: ${url}`);
+  }
+};
 
 export default function App() {
   const [running, setRunning] = useState(false);
@@ -30,6 +39,15 @@ export default function App() {
   const [highScore, setHighScore] = useState(false);
   const [showHighScores, setShowHighScores] = useState(false);
   const [lives, setLives] = useState(3);
+
+  useEffect(() => {
+    handleDeepLink();
+    Linking.addEventListener("url", handleDeepLink);
+
+    return () => {
+      Linking.removeEventListener("url", handleDeepLink);
+    };
+  }, []);
 
   useEffect(() => {
     const getHighScoreList = async () => {
@@ -183,11 +201,11 @@ export default function App() {
                 break;
               case "new_point":
                 // Check if point_counter is a multiple of 20
-                if (points % 20 === 0 && points >0) {
+                if (points % 20 === 0 && points > 0) {
                   setLives(lives + 1); // Increment lives by one
                 }
                 setPoints(points + 1);
-                
+
                 break;
               case "lose_life":
                 setLives(lives - 1);
