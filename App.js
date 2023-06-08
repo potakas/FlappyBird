@@ -19,7 +19,7 @@ import * as Linking from "expo-linking";
 const handleDeepLink = async () => {
   const url = await Linking.getInitialURL();
   if (url) {
-    Alert.alert("Deep Link", `Received deep link: ${url}`);
+    console.log( `Received deep link: ${url}`);
   }
 };
 
