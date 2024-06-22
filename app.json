@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme":"bouncingballapp",
+    "scheme": "bouncingballapp",
     "name": "BouncingBall",
     "slug": "BouncingBall",
     "version": "1.0.0",
@@ -32,6 +32,9 @@
       "eas": {
         "projectId": "33d196bd-4b68-4f73-a262-385557baecb3"
       }
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }

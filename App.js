@@ -1,18 +1,31 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
-  Button,
   ImageBackground,
-  StyleSheet,
   Text,
   TextInput,
   View,
+  Pressable,
 } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import restart from "./entities";
 import Physics from "./physics/physics";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//* for interantionalization
+import { getLocales } from "expo-localization";
+import { I18n } from "i18n-js";
+import { translations } from "./languages/translations";
+// Set the key-value pairs for the different languages you want to support.
+
+const i18n = new I18n(translations);
+
+// Set the locale once at the beginning of your app.
+i18n.locale = getLocales()[0].languageCode ?? "en";
+
+// When a value is missing from a language it'll fall back to another language with the key present.
+i18n.enableFallback = true;
+//* end of internationalization
 
 export default function App() {
   const [running, setRunning] = useState(false);
@@ -88,7 +101,7 @@ export default function App() {
             zIndex: 100,
           }}
         >
-          Lives:{lives}
+          {i18n.t("lives")}: {lives}
         </Text>
         <Text
           style={{
@@ -115,22 +128,28 @@ export default function App() {
               borderColor: "black",
               borderRadius: 8,
               backgroundColor: "gray",
+              height: "30%",
             }}
           >
-            <Text>Name</Text>
+            <Text style={{ fontSize: 23, fontWeight: "bold" }}>
+              {i18n.t("name")}
+            </Text>
             <TextInput
               style={{
                 backgroundColor: "white",
                 borderRadius: 8,
                 padding: 4,
                 width: "80%",
+                marginBottom: 8,
               }}
               onChangeText={(text) => {
                 setName(text);
               }}
               value={name}
             />
-            <Text>Score</Text>
+            <Text style={{ fontSize: 23, fontWeight: "bold" }}>
+              {i18n.t("score")}
+            </Text>
             <Text
               style={{
                 backgroundColor: "white",
@@ -138,12 +157,24 @@ export default function App() {
                 padding: 4,
                 width: "50%",
                 textAlign: "center",
+                marginBottom: 8,
+                fontSize: 23,
               }}
             >
               {points}
             </Text>
-            <Button
-              title="SUBMIT"
+            <Pressable
+              style={{
+                borderRadius: 8,
+                backgroundColor: "#0b81cf",
+                marginTop: 8,
+                padding: 4,
+                shadowColor: "#084974",
+                shadowOpacity: 0.9,
+                elevation: 6,
+                shadowRadius: 15,
+                shadowOffset: { width: 1, height: 13 },
+              }}
               onPress={() => {
                 console.log("NAME IS=>", name, "POINTS ARE=>", points);
                 AsyncStorage.setItem(
@@ -152,7 +183,11 @@ export default function App() {
                 );
                 setHighScore(false);
               }}
-            />
+            >
+              <Text style={{ color: "white", fontSize: 20 }}>
+                {i18n.t("submit")}
+              </Text>
+            </Pressable>
           </View>
         )}
         <GameEngine
@@ -183,11 +218,11 @@ export default function App() {
                 break;
               case "new_point":
                 // Check if point_counter is a multiple of 20
-                if (points % 20 === 0 && points >0) {
+                if (points % 20 === 0 && points > 0) {
                   setLives(lives + 1); // Increment lives by one
                 }
                 setPoints(points + 1);
-                
+
                 break;
               case "lose_life":
                 setLives(lives - 1);
@@ -228,7 +263,7 @@ export default function App() {
               <Text
                 style={{ fontWeight: "bold", color: "white", fontSize: 30 }}
               >
-                START GAME
+                {i18n.t("start_game")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -244,7 +279,7 @@ export default function App() {
               <Text
                 style={{ fontWeight: "bold", color: "white", fontSize: 30 }}
               >
-                HIGHSCORES
+                {i18n.t("highscores")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -286,7 +321,7 @@ export default function App() {
                   fontWeight: "bold",
                 }}
               >
-                Close
+                {i18n.t("close")}
               </Text>
             </TouchableOpacity>
           </View>
